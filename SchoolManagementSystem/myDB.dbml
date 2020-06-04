@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="sms" Class="myDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-7APSCMC;Initial Catalog=sms;Integrated Security=True" SettingsObjectName="SchoolManagementSystem.Properties.Settings" SettingsPropertyName="smsConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.roles" Member="roles">
+    <Type Name="role">
+      <Column Name="r_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="r_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="r_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.staff" Member="staffs">
+    <Type Name="staff">
+      <Column Name="st_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="st_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="st_username" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="st_password" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="st_phone1" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="st_phone2" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="st_role" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="st_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="st_image" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.sections" Member="sections">
+    <Type Name="section">
+      <Column Name="sec_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sec_name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="sec_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.subjects" Member="subjects">
+    <Type Name="subject">
+      <Column Name="sub_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sub_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="sub_classID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="class_subject" Member="class" ThisKey="sub_classID" OtherKey="cls_id" Type="class" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.housse" Member="housses">
+    <Type Name="housse">
+      <Column Name="h_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="h_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="h_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.shifts" Member="shifts">
+    <Type Name="shift">
+      <Column Name="sh_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sh_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="sh_number" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="sh_from" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="sh_to" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Association Name="shift_timing" Member="timings" ThisKey="sh_id" OtherKey="t_shift" Type="timing" />
+    </Type>
+  </Table>
+  <Table Name="dbo.levels" Member="levels">
+    <Type Name="level">
+      <Column Name="l_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="l_name" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="level_class" Member="classes" ThisKey="l_id" OtherKey="cls_levelID" Type="class" />
+      <Association Name="level_timing" Member="timings" ThisKey="l_id" OtherKey="t_levelID" Type="timing" />
+    </Type>
+  </Table>
+  <Table Name="dbo.classes" Member="classes">
+    <Type Name="class">
+      <Column Name="cls_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="cls_name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="cls_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="cls_levelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="class_subject" Member="subjects" ThisKey="cls_id" OtherKey="sub_classID" Type="subject" />
+      <Association Name="level_class" Member="level" ThisKey="cls_levelID" OtherKey="l_id" Type="level" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.timings" Member="timings">
+    <Type Name="timing">
+      <Column Name="t_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="t_name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="t_shift" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="t_fromTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="t_toTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="t_dayName" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="t_levelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="shift_timing" Member="shift" ThisKey="t_shift" OtherKey="sh_id" Type="shift" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="level_timing" Member="level" ThisKey="t_levelID" OtherKey="l_id" Type="level" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.st_insertRoles" Method="st_insertRoles">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getRoles" Method="st_getRoles">
+    <ElementType Name="st_getRolesResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_updateRoles" Method="st_updateRoles">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="roleID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteRole" Method="st_deleteRole">
+    <Parameter Name="roleID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_searchRoles" Method="st_searchRoles">
+    <Parameter Name="data" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="st_searchRolesResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_insertStaff" Method="st_insertStaff">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="phone1" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="phone2" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="role" Type="System.Int32" DbType="Int" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="image" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_insertStaffWithoutImage" Method="st_insertStaffWithoutImage">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="phone1" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="phone2" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="role" Type="System.Int32" DbType="Int" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateStaffWithoutImage" Method="st_updateStaffWithoutImage">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="phone1" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="phone2" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="role" Type="System.Int32" DbType="Int" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="staffID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateStaff" Method="st_updateStaff">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="phone1" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="phone2" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="role" Type="System.Int32" DbType="Int" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="image" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Parameter Name="staffID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteStaff" Method="st_deleteStaff">
+    <Parameter Name="staffID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getStaffDetails" Method="st_getStaffDetails">
+    <ElementType Name="st_getStaffDetailsResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone1" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone2" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="Role" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_insertSections" Method="st_insertSections">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateSections" Method="st_updateSections">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="secID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteSection" Method="st_deleteSection">
+    <Parameter Name="secID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getSections" Method="st_getSections">
+    <ElementType Name="st_getSectionsResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_insertClass" Method="st_insertClass">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateClass" Method="st_updateClass">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="clsID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteClass" Method="st_deleteClass">
+    <Parameter Name="clsID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_insertSubject" Method="st_insertSubject">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="classID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateSubject" Method="st_updateSubject">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="classID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteSubject" Method="st_deleteSubject">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getSubjects" Method="st_getSubjects">
+    <ElementType Name="st_getSubjectsResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Subjects" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Class" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_updateShifts" Method="st_updateShifts">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="number" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="from" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="to" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="shiftID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_insertShifts" Method="st_insertShifts">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="number" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="from" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="to" Type="System.TimeSpan" DbType="Time" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deleteShifts" Method="st_deleteShifts">
+    <Parameter Name="shiftID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getShifts" Method="st_getShifts">
+    <ElementType Name="st_getShiftsResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="[To]" Member="To" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Number" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_gethousse" Method="st_gethousse">
+    <ElementType Name="st_gethousseResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="House" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_inserthousse" Method="st_inserthousse">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updatehouses" Method="st_updatehouses">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="hID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deletehouses" Method="st_deletehouses">
+    <Parameter Name="hID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getStaffLoginDetails" Method="st_getStaffLoginDetails">
+    <Parameter Name="username" Type="System.String" DbType="VarChar(25)" />
+    <Parameter Name="password" Type="System.String" DbType="VarChar(25)" />
+    <ElementType Name="st_getStaffLoginDetailsResult">
+      <Column Name="[Staff ID]" Member="Staff_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_deleteTimings" Method="st_deleteTimings">
+    <Parameter Name="tID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getlevel" Method="st_getlevel">
+    <ElementType Name="st_getlevelResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LevelName" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_insertlevel" Method="st_insertlevel">
+    <Parameter Name="lvlname" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updatelevel" Method="st_updatelevel">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="lvlname" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_deletelevel" Method="st_deletelevel">
+    <Parameter Name="id" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_getClasses" Method="st_getClasses">
+    <ElementType Name="st_getClassesResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="[Level]" Member="Level" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_getTimings" Method="st_getTimings">
+    <ElementType Name="st_getTimingsResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TimingName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="[To]" Member="To" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="ShiftID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShiftName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Day" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Level]" Member="Level" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.st_insertTimings" Method="st_insertTimings">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="shift" Type="System.Int32" DbType="Int" />
+    <Parameter Name="from" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="to" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="day" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="levelID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.st_updateTimings" Method="st_updateTimings">
+    <Parameter Name="name" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="shift" Type="System.Int32" DbType="Int" />
+    <Parameter Name="from" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="to" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="day" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="tID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="levelID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
